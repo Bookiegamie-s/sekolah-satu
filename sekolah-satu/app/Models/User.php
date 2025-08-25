@@ -2,47 +2,71 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        "name",
+        "email", 
+        "password",
+        "phone",
+        "address",
+        "birth_date",
+        "gender",
+        "avatar",
+        "is_active"
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
-        'password',
-        'remember_token',
+        "password",
+        "remember_token",
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            "email_verified_at" => "datetime",
+            "password" => "hashed",
+            "birth_date" => "date",
+            "is_active" => "boolean"
         ];
+    }
+
+    // Relationships
+    public function teacher()
+    {
+        return $this->hasOne(Teacher::class);
+    }
+
+    public function student()
+    {
+        return $this->hasOne(Student::class);
+    }
+
+    public function bookLoans()
+    {
+        return $this->hasMany(BookLoan::class);
+    }
+
+    // Helper methods
+    public function isAdmin()
+    {
+        return $this->hasRole("admin");
+    }
+
+    public function isTeacher()
+    {
+        return $this->hasRole("teacher");
+    }
+
+    public function isStudent()
+    {
+        return $this->hasRole("student");
     }
 }
