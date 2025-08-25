@@ -12,14 +12,6 @@ use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware("auth");
-        $this->middleware("permission:view attendance")->only(["index", "show"]);
-        $this->middleware("permission:create attendance")->only(["create", "store"]);
-        $this->middleware("permission:edit attendance")->only(["edit", "update"]);
-    }
-
     public function index(Request $request)
     {
         $query = Attendance::with(["student.user", "class", "subject", "teacher.user"])

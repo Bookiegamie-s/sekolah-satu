@@ -12,15 +12,6 @@ use PDF;
 
 class BookLoanController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware("auth");
-        $this->middleware("permission:view book loans")->only(["index", "show"]);
-        $this->middleware("permission:create book loans")->only(["create", "store"]);
-        $this->middleware("permission:edit book loans")->only(["edit", "update"]);
-        $this->middleware("permission:delete book loans")->only(["destroy"]);
-    }
-
     public function index(Request $request)
     {
         $query = BookLoan::with(["user", "book"])

@@ -8,15 +8,6 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware("auth");
-        $this->middleware("permission:view books")->only(["index", "show"]);
-        $this->middleware("permission:create books")->only(["create", "store"]);
-        $this->middleware("permission:edit books")->only(["edit", "update"]);
-        $this->middleware("permission:delete books")->only(["destroy"]);
-    }
-
     public function index(Request $request)
     {
         $query = Book::query()

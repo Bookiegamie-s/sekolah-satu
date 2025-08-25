@@ -12,15 +12,6 @@ use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware("auth");
-        $this->middleware("permission:view students")->only(["index", "show"]);
-        $this->middleware("permission:create students")->only(["create", "store"]);
-        $this->middleware("permission:edit students")->only(["edit", "update"]);
-        $this->middleware("permission:delete students")->only(["destroy"]);
-    }
-
     public function index(Request $request)
     {
         $query = Student::with(["user", "class"])

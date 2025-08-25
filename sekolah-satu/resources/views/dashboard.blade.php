@@ -123,6 +123,15 @@
                         </a>
                         @endcan
 
+                        @can('view_students')
+                        @cannot('manage_students')
+                        <a href="{{ route('students.index') }}" class="flex items-center p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition duration-200">
+                            <i class="fas fa-user-graduate text-yellow-600 text-xl mr-3"></i>
+                            <span class="font-medium text-yellow-900">Data Siswa</span>
+                        </a>
+                        @endcannot
+                        @endcan
+
                         @can('manage_books')
                         <a href="{{ route('books.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition duration-200">
                             <i class="fas fa-book text-purple-600 text-xl mr-3"></i>
@@ -130,18 +139,60 @@
                         </a>
                         @endcan
 
+                        @can('manage_classes')
+                        <a href="{{ route('classes.index') }}" class="flex items-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition duration-200">
+                            <i class="fas fa-school text-indigo-600 text-xl mr-3"></i>
+                            <span class="font-medium text-indigo-900">Kelola Kelas</span>
+                        </a>
+                        @endcan
+
+                        @can('manage_schedules')
+                        <a href="{{ route('schedules.index') }}" class="flex items-center p-4 bg-teal-50 rounded-lg hover:bg-teal-100 transition duration-200">
+                            <i class="fas fa-calendar text-teal-600 text-xl mr-3"></i>
+                            <span class="font-medium text-teal-900">Kelola Jadwal</span>
+                        </a>
+                        @endcan
+
+                        @can('view_own_grades')
+                        <a href="{{ route('grades.my') }}" class="flex items-center p-4 bg-pink-50 rounded-lg hover:bg-pink-100 transition duration-200">
+                            <i class="fas fa-chart-line text-pink-600 text-xl mr-3"></i>
+                            <span class="font-medium text-pink-900">Nilai Saya</span>
+                        </a>
+                        @endcan
+
+                        @can('view_own_schedule')
+                        <a href="{{ route('schedules.my') }}" class="flex items-center p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition duration-200">
+                            <i class="fas fa-calendar-alt text-orange-600 text-xl mr-3"></i>
+                            <span class="font-medium text-orange-900">Jadwal Saya</span>
+                        </a>
+                        @endcan
+
                         @hasrole('student')
+                        @if(auth()->user()->student)
                         <a href="{{ route('students.show', auth()->user()->student->id) }}" class="flex items-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition duration-200">
                             <i class="fas fa-id-card text-indigo-600 text-xl mr-3"></i>
                             <span class="font-medium text-indigo-900">Profil Saya</span>
                         </a>
+                        @else
+                        <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                            <i class="fas fa-exclamation-triangle text-gray-400 text-xl mr-3"></i>
+                            <span class="font-medium text-gray-500">Profil belum tersedia</span>
+                        </div>
+                        @endif
                         @endhasrole
 
                         @hasrole('teacher')
+                        @if(auth()->user()->teacher)
                         <a href="{{ route('teachers.show', auth()->user()->teacher->id) }}" class="flex items-center p-4 bg-teal-50 rounded-lg hover:bg-teal-100 transition duration-200">
                             <i class="fas fa-id-card text-teal-600 text-xl mr-3"></i>
                             <span class="font-medium text-teal-900">Profil Saya</span>
                         </a>
+                        @else
+                        <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                            <i class="fas fa-exclamation-triangle text-gray-400 text-xl mr-3"></i>
+                            <span class="font-medium text-gray-500">Profil belum tersedia</span>
+                        </div>
+                        @endif
                         @endhasrole
                     </div>
                 </div>

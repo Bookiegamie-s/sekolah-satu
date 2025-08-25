@@ -21,47 +21,96 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    @can('manage_users')
-                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')" class="flex items-center">
-                        <i class="fas fa-users mr-2"></i>
-                        {{ __('Users') }}
-                    </x-nav-link>
-                    @endcan
+                    @if(auth()->user()->roles->count() > 0)
+                        @can('manage_users')
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')" class="flex items-center">
+                            <i class="fas fa-users mr-2"></i>
+                            {{ __('Users') }}
+                        </x-nav-link>
+                        @endcan
 
-                    @can('manage_teachers')
-                    <x-nav-link :href="route('teachers.index')" :active="request()->routeIs('teachers.*')" class="flex items-center">
-                        <i class="fas fa-chalkboard-teacher mr-2"></i>
-                        {{ __('Guru') }}
-                    </x-nav-link>
-                    @endcan
+                        @can('manage_teachers')
+                        <x-nav-link :href="route('teachers.index')" :active="request()->routeIs('teachers.*')" class="flex items-center">
+                            <i class="fas fa-chalkboard-teacher mr-2"></i>
+                            {{ __('Guru') }}
+                        </x-nav-link>
+                        @endcan
 
-                    @can('manage_students')
-                    <x-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')" class="flex items-center">
-                        <i class="fas fa-user-graduate mr-2"></i>
-                        {{ __('Siswa') }}
-                    </x-nav-link>
-                    @endcan
+                        @can('manage_students')
+                        <x-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')" class="flex items-center">
+                            <i class="fas fa-user-graduate mr-2"></i>
+                            {{ __('Siswa') }}
+                        </x-nav-link>
+                        @endcan
 
-                    @can('manage_books')
-                    <x-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')" class="flex items-center">
-                        <i class="fas fa-book mr-2"></i>
-                        {{ __('Perpustakaan') }}
-                    </x-nav-link>
-                    @endcan
+                        @can('view_students')
+                        @cannot('manage_students')
+                        <x-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')" class="flex items-center">
+                            <i class="fas fa-user-graduate mr-2"></i>
+                            {{ __('Data Siswa') }}
+                        </x-nav-link>
+                        @endcannot
+                        @endcan
 
-                    @hasrole('student')
-                    <x-nav-link :href="route('students.show', auth()->user()->student->id ?? 0)" :active="request()->routeIs('students.show')" class="flex items-center">
-                        <i class="fas fa-id-card mr-2"></i>
-                        {{ __('Profil Saya') }}
-                    </x-nav-link>
-                    @endhasrole
+                        @can('manage_books')
+                        <x-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')" class="flex items-center">
+                            <i class="fas fa-book mr-2"></i>
+                            {{ __('Perpustakaan') }}
+                        </x-nav-link>
+                        @endcan
 
-                    @hasrole('teacher')
-                    <x-nav-link :href="route('teachers.show', auth()->user()->teacher->id ?? 0)" :active="request()->routeIs('teachers.show')" class="flex items-center">
-                        <i class="fas fa-id-card mr-2"></i>
-                        {{ __('Profil Saya') }}
-                    </x-nav-link>
-                    @endhasrole
+                        @can('manage_classes')
+                        <x-nav-link :href="route('classes.index')" :active="request()->routeIs('classes.*')" class="flex items-center">
+                            <i class="fas fa-school mr-2"></i>
+                            {{ __('Kelas') }}
+                        </x-nav-link>
+                        @endcan
+
+                        @can('manage_schedules')
+                        <x-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.*')" class="flex items-center">
+                            <i class="fas fa-calendar mr-2"></i>
+                            {{ __('Jadwal') }}
+                        </x-nav-link>
+                        @endcan
+
+                        @can('view_own_grades')
+                        <x-nav-link :href="route('grades.my')" :active="request()->routeIs('grades.my')" class="flex items-center">
+                            <i class="fas fa-chart-line mr-2"></i>
+                            {{ __('Nilai Saya') }}
+                        </x-nav-link>
+                        @endcan
+
+                        @can('view_own_schedule')
+                        <x-nav-link :href="route('schedules.my')" :active="request()->routeIs('schedules.my')" class="flex items-center">
+                            <i class="fas fa-calendar-alt mr-2"></i>
+                            {{ __('Jadwal Saya') }}
+                        </x-nav-link>
+                        @endcan
+
+                        @hasrole('student')
+                        @if(auth()->user()->student)
+                        <x-nav-link :href="route('students.show', auth()->user()->student->id)" :active="request()->routeIs('students.show')" class="flex items-center">
+                            <i class="fas fa-id-card mr-2"></i>
+                            {{ __('Profil Saya') }}
+                        </x-nav-link>
+                        @endif
+                        @endhasrole
+
+                        @hasrole('teacher')
+                        @if(auth()->user()->teacher)
+                        <x-nav-link :href="route('teachers.show', auth()->user()->teacher->id)" :active="request()->routeIs('teachers.show')" class="flex items-center">
+                            <i class="fas fa-id-card mr-2"></i>
+                            {{ __('Profil Saya') }}
+                        </x-nav-link>
+                        @endif
+                        @endhasrole
+                    @else
+                        <!-- User tanpa role hanya melihat dashboard -->
+                        <div class="text-sm text-gray-500 px-3 py-2">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            Role belum ditetapkan
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -135,47 +184,96 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
-            @can('manage_users')
-            <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')" class="flex items-center">
-                <i class="fas fa-users mr-2"></i>
-                {{ __('Users') }}
-            </x-responsive-nav-link>
-            @endcan
+            @if(auth()->user()->roles->count() > 0)
+                @can('manage_users')
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')" class="flex items-center">
+                    <i class="fas fa-users mr-2"></i>
+                    {{ __('Users') }}
+                </x-responsive-nav-link>
+                @endcan
 
-            @can('manage_teachers')
-            <x-responsive-nav-link :href="route('teachers.index')" :active="request()->routeIs('teachers.*')" class="flex items-center">
-                <i class="fas fa-chalkboard-teacher mr-2"></i>
-                {{ __('Guru') }}
-            </x-responsive-nav-link>
-            @endcan
+                @can('manage_teachers')
+                <x-responsive-nav-link :href="route('teachers.index')" :active="request()->routeIs('teachers.*')" class="flex items-center">
+                    <i class="fas fa-chalkboard-teacher mr-2"></i>
+                    {{ __('Guru') }}
+                </x-responsive-nav-link>
+                @endcan
 
-            @can('manage_students')
-            <x-responsive-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')" class="flex items-center">
-                <i class="fas fa-user-graduate mr-2"></i>
-                {{ __('Siswa') }}
-            </x-responsive-nav-link>
-            @endcan
+                @can('manage_students')
+                <x-responsive-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')" class="flex items-center">
+                    <i class="fas fa-user-graduate mr-2"></i>
+                    {{ __('Siswa') }}
+                </x-responsive-nav-link>
+                @endcan
 
-            @can('manage_books')
-            <x-responsive-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')" class="flex items-center">
-                <i class="fas fa-book mr-2"></i>
-                {{ __('Perpustakaan') }}
-            </x-responsive-nav-link>
-            @endcan
+                @can('view_students')
+                @cannot('manage_students')
+                <x-responsive-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')" class="flex items-center">
+                    <i class="fas fa-user-graduate mr-2"></i>
+                    {{ __('Data Siswa') }}
+                </x-responsive-nav-link>
+                @endcannot
+                @endcan
 
-            @hasrole('student')
-            <x-responsive-nav-link :href="route('students.show', auth()->user()->student->id ?? 0)" :active="request()->routeIs('students.show')" class="flex items-center">
-                <i class="fas fa-id-card mr-2"></i>
-                {{ __('Profil Saya') }}
-            </x-responsive-nav-link>
-            @endhasrole
+                @can('manage_books')
+                <x-responsive-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')" class="flex items-center">
+                    <i class="fas fa-book mr-2"></i>
+                    {{ __('Perpustakaan') }}
+                </x-responsive-nav-link>
+                @endcan
 
-            @hasrole('teacher')
-            <x-responsive-nav-link :href="route('teachers.show', auth()->user()->teacher->id ?? 0)" :active="request()->routeIs('teachers.show')" class="flex items-center">
-                <i class="fas fa-id-card mr-2"></i>
-                {{ __('Profil Saya') }}
-            </x-responsive-nav-link>
-            @endhasrole
+                @can('manage_classes')
+                <x-responsive-nav-link :href="route('classes.index')" :active="request()->routeIs('classes.*')" class="flex items-center">
+                    <i class="fas fa-school mr-2"></i>
+                    {{ __('Kelas') }}
+                </x-responsive-nav-link>
+                @endcan
+
+                @can('manage_schedules')
+                <x-responsive-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.*')" class="flex items-center">
+                    <i class="fas fa-calendar mr-2"></i>
+                    {{ __('Jadwal') }}
+                </x-responsive-nav-link>
+                @endcan
+
+                @can('view_own_grades')
+                <x-responsive-nav-link :href="route('grades.my')" :active="request()->routeIs('grades.my')" class="flex items-center">
+                    <i class="fas fa-chart-line mr-2"></i>
+                    {{ __('Nilai Saya') }}
+                </x-responsive-nav-link>
+                @endcan
+
+                @can('view_own_schedule')
+                <x-responsive-nav-link :href="route('schedules.my')" :active="request()->routeIs('schedules.my')" class="flex items-center">
+                    <i class="fas fa-calendar-alt mr-2"></i>
+                    {{ __('Jadwal Saya') }}
+                </x-responsive-nav-link>
+                @endcan
+
+                @hasrole('student')
+                @if(auth()->user()->student)
+                <x-responsive-nav-link :href="route('students.show', auth()->user()->student->id)" :active="request()->routeIs('students.show')" class="flex items-center">
+                    <i class="fas fa-id-card mr-2"></i>
+                    {{ __('Profil Saya') }}
+                </x-responsive-nav-link>
+                @endif
+                @endhasrole
+
+                @hasrole('teacher')
+                @if(auth()->user()->teacher)
+                <x-responsive-nav-link :href="route('teachers.show', auth()->user()->teacher->id)" :active="request()->routeIs('teachers.show')" class="flex items-center">
+                    <i class="fas fa-id-card mr-2"></i>
+                    {{ __('Profil Saya') }}
+                </x-responsive-nav-link>
+                @endif
+                @endhasrole
+            @else
+                <!-- User tanpa role -->
+                <div class="px-4 py-2 text-sm text-gray-500">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    Role belum ditetapkan
+                </div>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
