@@ -260,7 +260,7 @@ class GradeController extends Controller
 
         $student = $user->student;
         $grades = $student->grades()
-            ->with(['subject', 'student.schoolClass'])
+            ->with(['subject', 'teacher'])
             ->orderBy('academic_year', 'desc')
             ->orderBy('semester', 'desc')
             ->orderBy('created_at', 'desc')

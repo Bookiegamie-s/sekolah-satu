@@ -17,9 +17,15 @@ class GradeSeeder extends Seeder
     {
         $students = Student::all();
         $subjects = Subject::all();
+        $teachers = \App\Models\Teacher::all();
 
         if ($students->count() == 0) {
             $this->command->info('No students found. Please seed students first.');
+            return;
+        }
+
+        if ($teachers->count() == 0) {
+            $this->command->info('No teachers found. Please seed teachers first.');
             return;
         }
 
@@ -54,37 +60,32 @@ class GradeSeeder extends Seeder
             $academicYear = '2024/2025';
             
             foreach ([1, 2] as $semester) {
-                // Take random subjects for this semester
-                $semesterSubjects = $subjects->random(rand(5, 7));
+                // Take random subjects for this semester (max available subjects)
+                $maxSubjects = min($subjects->count(), 6);
+                $subjectCount = rand(3, $maxSubjects);
+                $semesterSubjects = $subjects->random($subjectCount);
                 
                 foreach ($semesterSubjects as $subject) {
-                    $assignmentScore = rand(70, 95);
-                    $midtermScore = rand(70, 95);
-                    $finalScore = rand(70, 95);
+                    // Create multiple assessment types for each subject
+                    $assessmentTypes = ['assignment', 'midterm', 'final'];
+                    $teacher = $teachers->random(); // Random teacher for this subject
                     
-                    // Calculate total score (weighted average)
-                    $totalScore = round(($assignmentScore * 0.3) + ($midtermScore * 0.3) + ($finalScore * 0.4));
-                    
-                    // Determine grade
-                    $grade = match(true) {
-                        $totalScore >= 90 => 'A',
-                        $totalScore >= 80 => 'B',
-                        $totalScore >= 70 => 'C',
-                        $totalScore >= 60 => 'D',
-                        default => 'E'
-                    };
+                    foreach ($assessmentTypes as $assessmentType) {
+                        $score = rand(70, 95);
+                        $maxScore = 100;
 
-                    Grade::create([
-                        'student_id' => $student->id,
-                        'subject_id' => $subject->id,
-                        'academic_year' => $academicYear,
-                        'semester' => $semester,
-                        'assignment_score' => $assignmentScore,
-                        'midterm_score' => $midtermScore,
-                        'final_score' => $finalScore,
-                        'total_score' => $totalScore,
-                        'grade' => $grade,
-                    ]);
+                        Grade::create([
+                            'student_id' => $student->id,
+                            'subject_id' => $subject->id,
+                            'teacher_id' => $teacher->id,
+                            'academic_year' => $academicYear,
+                            'semester' => $semester,
+                            'assessment_type' => $assessmentType,
+                            'score' => $score,
+                            'max_score' => $maxScore,
+                            'notes' => 'Penilaian ' . $assessmentType . ' untuk ' . $subject->name,
+                        ]);
+                    }
                 }
             }
         }

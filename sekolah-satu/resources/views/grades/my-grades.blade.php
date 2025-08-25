@@ -44,19 +44,19 @@
                                                 Mata Pelajaran
                                             </th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                Tugas
+                                                Jenis Penilaian
                                             </th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                UTS
+                                                Nilai
                                             </th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                UAS
+                                                Nilai Maksimal
                                             </th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                Nilai Akhir
+                                                Persentase
                                             </th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                Grade
+                                                Catatan
                                             </th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 Tanggal Input
@@ -75,35 +75,42 @@
                                                     </div>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <span class="text-sm text-gray-900">{{ $grade->assignment_score ?? '-' }}</span>
+                                                    @php
+                                                        $assessmentLabels = [
+                                                            'assignment' => 'Tugas',
+                                                            'quiz' => 'Kuis',
+                                                            'midterm' => 'UTS',
+                                                            'final' => 'UAS',
+                                                            'project' => 'Projek'
+                                                        ];
+                                                    @endphp
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                        {{ $assessmentLabels[$grade->assessment_type] ?? $grade->assessment_type }}
+                                                    </span>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <span class="text-sm text-gray-900">{{ $grade->midterm_score ?? '-' }}</span>
+                                                    <span class="text-sm font-semibold text-gray-900">{{ $grade->score }}</span>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <span class="text-sm text-gray-900">{{ $grade->final_score ?? '-' }}</span>
+                                                    <span class="text-sm text-gray-900">{{ $grade->max_score }}</span>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <span class="text-sm font-semibold text-gray-900">{{ $grade->total_score ?? '-' }}</span>
+                                                    @php
+                                                        $percentage = ($grade->score / $grade->max_score) * 100;
+                                                        $percentageColor = match(true) {
+                                                            $percentage >= 90 => 'text-green-600',
+                                                            $percentage >= 80 => 'text-blue-600',
+                                                            $percentage >= 70 => 'text-yellow-600',
+                                                            $percentage >= 60 => 'text-orange-600',
+                                                            default => 'text-red-600'
+                                                        };
+                                                    @endphp
+                                                    <span class="text-sm font-semibold {{ $percentageColor }}">
+                                                        {{ number_format($percentage, 1) }}%
+                                                    </span>
                                                 </td>
-                                                <td class="px-6 py-4 whitespace-nowrap">
-                                                    @if($grade->grade)
-                                                        @php
-                                                            $gradeColor = match($grade->grade) {
-                                                                'A' => 'bg-green-100 text-green-800',
-                                                                'B' => 'bg-blue-100 text-blue-800',
-                                                                'C' => 'bg-yellow-100 text-yellow-800',
-                                                                'D' => 'bg-orange-100 text-orange-800',
-                                                                'E', 'F' => 'bg-red-100 text-red-800',
-                                                                default => 'bg-gray-100 text-gray-800'
-                                                            };
-                                                        @endphp
-                                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $gradeColor }}">
-                                                            {{ $grade->grade }}
-                                                        </span>
-                                                    @else
-                                                        <span class="text-sm text-gray-400">-</span>
-                                                    @endif
+                                                <td class="px-6 py-4">
+                                                    <span class="text-sm text-gray-500">{{ $grade->notes ?? '-' }}</span>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                     {{ $grade->created_at->format('d/m/Y') }}
@@ -122,7 +129,7 @@
                                         <div>
                                             <p class="text-sm font-medium text-blue-900">Rata-rata</p>
                                             <p class="text-lg font-bold text-blue-600">
-                                                {{ number_format($semesterGrades->avg('total_score'), 2) }}
+                                                {{ number_format($semesterGrades->avg('score'), 2) }}
                                             </p>
                                         </div>
                                     </div>
@@ -133,7 +140,7 @@
                                         <div>
                                             <p class="text-sm font-medium text-green-900">Nilai Tertinggi</p>
                                             <p class="text-lg font-bold text-green-600">
-                                                {{ $semesterGrades->max('total_score') ?? '-' }}
+                                                {{ $semesterGrades->max('score') ?? '-' }}
                                             </p>
                                         </div>
                                     </div>
@@ -142,7 +149,7 @@
                                     <div class="flex items-center">
                                         <i class="fas fa-book-open text-yellow-600 mr-2"></i>
                                         <div>
-                                            <p class="text-sm font-medium text-yellow-900">Total Mata Pelajaran</p>
+                                            <p class="text-sm font-medium text-yellow-900">Total Penilaian</p>
                                             <p class="text-lg font-bold text-yellow-600">
                                                 {{ $semesterGrades->count() }}
                                             </p>
