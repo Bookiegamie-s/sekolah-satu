@@ -23,7 +23,7 @@
 
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                @can('manage-users')
+                @can('manage_users')
                 <!-- Total Users -->
                 <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-blue-500">
                     <div class="p-6">
@@ -40,7 +40,7 @@
                 </div>
                 @endcan
 
-                @can('manage-teachers')
+                @can('manage_teachers')
                 <!-- Total Teachers -->
                 <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-green-500">
                     <div class="p-6">
@@ -57,7 +57,7 @@
                 </div>
                 @endcan
 
-                @can('manage-students')
+                @can('manage_students')
                 <!-- Total Students -->
                 <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-yellow-500">
                     <div class="p-6">
@@ -74,7 +74,7 @@
                 </div>
                 @endcan
 
-                @can('manage-books')
+                @can('manage_books')
                 <!-- Total Books -->
                 <div class="bg-white overflow-hidden shadow-lg rounded-lg border-l-4 border-purple-500">
                     <div class="p-6">
@@ -102,28 +102,28 @@
                 </div>
                 <div class="p-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        @can('manage-users')
+                        @can('manage_users')
                         <a href="{{ route('users.index') }}" class="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition duration-200">
                             <i class="fas fa-users text-blue-600 text-xl mr-3"></i>
                             <span class="font-medium text-blue-900">Kelola Users</span>
                         </a>
                         @endcan
 
-                        @can('manage-teachers')
+                        @can('manage_teachers')
                         <a href="{{ route('teachers.index') }}" class="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition duration-200">
                             <i class="fas fa-chalkboard-teacher text-green-600 text-xl mr-3"></i>
                             <span class="font-medium text-green-900">Kelola Guru</span>
                         </a>
                         @endcan
 
-                        @can('manage-students')
+                        @can('manage_students')
                         <a href="{{ route('students.index') }}" class="flex items-center p-4 bg-yellow-50 rounded-lg hover:bg-yellow-100 transition duration-200">
                             <i class="fas fa-user-graduate text-yellow-600 text-xl mr-3"></i>
                             <span class="font-medium text-yellow-900">Kelola Siswa</span>
                         </a>
                         @endcan
 
-                        @can('manage-books')
+                        @can('manage_books')
                         <a href="{{ route('books.index') }}" class="flex items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition duration-200">
                             <i class="fas fa-book text-purple-600 text-xl mr-3"></i>
                             <span class="font-medium text-purple-900">Kelola Buku</span>

@@ -21,28 +21,28 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    @can('manage-users')
+                    @can('manage_users')
                     <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')" class="flex items-center">
                         <i class="fas fa-users mr-2"></i>
                         {{ __('Users') }}
                     </x-nav-link>
                     @endcan
 
-                    @can('manage-teachers')
+                    @can('manage_teachers')
                     <x-nav-link :href="route('teachers.index')" :active="request()->routeIs('teachers.*')" class="flex items-center">
                         <i class="fas fa-chalkboard-teacher mr-2"></i>
                         {{ __('Guru') }}
                     </x-nav-link>
                     @endcan
 
-                    @can('manage-students')
+                    @can('manage_students')
                     <x-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')" class="flex items-center">
                         <i class="fas fa-user-graduate mr-2"></i>
                         {{ __('Siswa') }}
                     </x-nav-link>
                     @endcan
 
-                    @can('manage-books')
+                    @can('manage_books')
                     <x-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')" class="flex items-center">
                         <i class="fas fa-book mr-2"></i>
                         {{ __('Perpustakaan') }}
@@ -129,34 +129,34 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
+                <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="flex items-center">
                 <i class="fas fa-tachometer-alt mr-2"></i>
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
 
-            @can('manage-users')
+            @can('manage_users')
             <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')" class="flex items-center">
                 <i class="fas fa-users mr-2"></i>
                 {{ __('Users') }}
             </x-responsive-nav-link>
             @endcan
 
-            @can('manage-teachers')
+            @can('manage_teachers')
             <x-responsive-nav-link :href="route('teachers.index')" :active="request()->routeIs('teachers.*')" class="flex items-center">
                 <i class="fas fa-chalkboard-teacher mr-2"></i>
                 {{ __('Guru') }}
             </x-responsive-nav-link>
             @endcan
 
-            @can('manage-students')
+            @can('manage_students')
             <x-responsive-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')" class="flex items-center">
                 <i class="fas fa-user-graduate mr-2"></i>
                 {{ __('Siswa') }}
             </x-responsive-nav-link>
             @endcan
 
-            @can('manage-books')
+            @can('manage_books')
             <x-responsive-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')" class="flex items-center">
                 <i class="fas fa-book mr-2"></i>
                 {{ __('Perpustakaan') }}
