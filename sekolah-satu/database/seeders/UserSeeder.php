@@ -34,10 +34,13 @@ class UserSeeder extends Seeder
 
         Teacher::create([
             "user_id" => $teacher1->id,
-            "nip" => "198501012010011001",
-            "qualification" => "S1",
-            "max_teaching_hours" => 24,
-            "status" => "active",
+            "employee_id" => "198501012010011001",
+            "specialization" => "Matematika",
+            "max_jam_mengajar" => 24,
+            "hire_date" => "2020-01-01",
+            "salary" => 5000000,
+            "qualifications" => "S1 Pendidikan Matematika",
+            "is_active" => true,
         ]);
 
         $teacher2 = User::create([
@@ -52,10 +55,13 @@ class UserSeeder extends Seeder
 
         Teacher::create([
             "user_id" => $teacher2->id,
-            "nip" => "198502022011012002",
-            "qualification" => "S1",
-            "max_teaching_hours" => 24,
-            "status" => "active",
+            "employee_id" => "198502022011012002",
+            "specialization" => "Bahasa Indonesia",
+            "max_jam_mengajar" => 24,
+            "hire_date" => "2020-02-01",
+            "salary" => 5200000,
+            "qualifications" => "S1 Pendidikan Bahasa Indonesia",
+            "is_active" => true,
         ]);
 
         // Create Student Users
@@ -71,8 +77,12 @@ class UserSeeder extends Seeder
 
         Student::create([
             "user_id" => $student1->id,
-            "nis" => "2024001001",
-            "admission_year" => 2024,
+            "class_id" => 1,
+            "student_id" => "2024001001",
+            "parent_name" => "Bapak Fauzi",
+            "parent_phone" => "081234567800",
+            "parent_address" => "Jl. Siswa No. 1, Jakarta",
+            "enrollment_date" => "2024-07-01",
             "status" => "active",
         ]);
 
@@ -88,8 +98,12 @@ class UserSeeder extends Seeder
 
         Student::create([
             "user_id" => $student2->id,
-            "nis" => "2024001002",
-            "admission_year" => 2024,
+            "class_id" => 1,
+            "student_id" => "2024001002",
+            "parent_name" => "Ibu Lestari",
+            "parent_phone" => "081234567801",
+            "parent_address" => "Jl. Siswa No. 2, Jakarta",
+            "enrollment_date" => "2024-07-01",
             "status" => "active",
         ]);
 
