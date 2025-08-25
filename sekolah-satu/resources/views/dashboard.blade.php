@@ -6,7 +6,11 @@
                 Dashboard Sekolah
             </h2>
             <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
-                {{ auth()->user()->getRoleNames()->first() ?? 'User' }}
+                @if(auth()->user()->roles->count() > 0)
+                    {{ auth()->user()->getRoleNames()->first() }}
+                @else
+                    Pending Role
+                @endif
             </span>
         </div>
     </x-slot>
@@ -18,9 +22,15 @@
                 <div class="p-6">
                     <h3 class="text-xl font-bold mb-2">Selamat Datang, {{ auth()->user()->name }}!</h3>
                     <p class="opacity-90">Sistem Manajemen Sekolah Digital</p>
+                    @if(auth()->user()->roles->count() == 0)
+                        <div class="mt-4 bg-yellow-500/20 border border-yellow-300 rounded-lg p-3">
+                            <p class="text-sm">⚠️ Role Anda belum ditetapkan. Silakan hubungi administrator.</p>
+                        </div>
+                    @endif
                 </div>
             </div>
 
+            @if(auth()->user()->roles->count() > 0)
             <!-- Stats Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 @can('manage_users')
@@ -197,6 +207,57 @@
                     </div>
                 </div>
             </div>
+
+            @else
+            <!-- Dashboard untuk User tanpa Role -->
+            <div class="bg-white overflow-hidden shadow-lg rounded-lg">
+                <div class="p-8 text-center">
+                    <div class="mx-auto w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-user-clock text-yellow-600 text-3xl"></i>
+                    </div>
+                    
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Akun Sedang Diproses</h2>
+                    
+                    <p class="text-gray-600 mb-6 max-w-md mx-auto">
+                        Akun Anda telah berhasil dibuat, namun role/peran Anda belum ditetapkan oleh administrator.
+                    </p>
+                    
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 max-w-lg mx-auto">
+                        <div class="flex items-start">
+                            <i class="fas fa-info-circle text-blue-600 mt-1 mr-3"></i>
+                            <div class="text-left">
+                                <h4 class="font-semibold text-blue-900 mb-2">Langkah Selanjutnya:</h4>
+                                <ul class="text-sm text-blue-800 space-y-1">
+                                    <li>• Hubungi administrator sekolah</li>
+                                    <li>• Sebutkan nama lengkap dan email Anda</li>
+                                    <li>• Tunggu konfirmasi penetapan role</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center space-x-4">
+                        <a href="{{ route('profile.edit') }}" 
+                           class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200">
+                            <i class="fas fa-user-edit mr-2"></i>
+                            Edit Profil
+                        </a>
+                        
+                        <button type="button" onclick="location.reload()" 
+                                class="inline-flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors duration-200">
+                            <i class="fas fa-sync-alt mr-2"></i>
+                            Refresh
+                        </button>
+                    </div>
+                    
+                    <div class="mt-8 text-sm text-gray-500">
+                        <p>Butuh bantuan? Hubungi administrator di: 
+                            <a href="mailto:admin@sekolah.edu" class="text-blue-600 hover:underline">admin@sekolah.edu</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            @endif
 
             <!-- Recent Activity (placeholder for future development) -->
             <div class="mt-8 bg-white overflow-hidden shadow-lg rounded-lg">
