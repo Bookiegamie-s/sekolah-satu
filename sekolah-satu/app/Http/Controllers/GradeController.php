@@ -245,4 +245,33 @@ class GradeController extends Controller
 
         return view("grades.transcript", compact("student", "gradesByYear"));
     }
+
+    /**
+     * Show grades for the authenticated student
+     */
+    public function myGrades()
+    {
+        $user = auth()->user();
+        
+        // Check if user has student relation
+        if (!$user->student) {
+            return redirect()->route('dashboard')->with('error', 'Anda tidak terdaftar sebagai siswa.');
+        }
+
+        $student = $user->student;
+        $grades = $student->grades()
+            ->with(['subject', 'student.schoolClass'])
+            ->orderBy('academic_year', 'desc')
+            ->orderBy('semester', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Group by academic year and semester
+        $gradesByYear = $grades->groupBy('academic_year')
+            ->map(function($yearGrades) {
+                return $yearGrades->groupBy('semester');
+            });
+
+        return view('grades.my-grades', compact('student', 'grades', 'gradesByYear'));
+    }
 }
