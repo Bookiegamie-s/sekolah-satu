@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ClassController;
@@ -29,8 +30,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Teacher management (Admin only)
+    // User management (Admin only)
     Route::middleware(['role:admin'])->group(function () {
+        Route::resource('users', UserController::class);
         Route::resource('teachers', TeacherController::class);
         Route::resource('classes', ClassController::class);
         Route::resource('subjects', SubjectController::class);
