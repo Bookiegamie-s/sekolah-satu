@@ -98,7 +98,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
     
     // All authenticated users
-    Route::group(function () {
+    Route::middleware('auth')->group(function () {
         
         // View books (read-only for students)
         Route::get('books', [BookController::class, 'index'])->name('books.index');

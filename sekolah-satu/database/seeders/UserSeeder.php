@@ -6,153 +6,102 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Teacher;
 use App\Models\Student;
-use App\Models\ClassModel;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        // Create admin user
-        $admin = User::firstOrCreate([
-            "email" => "admin@sekolah.com"
-        ], [
+        // Create Admin User
+        $admin = User::create([
             "name" => "Administrator",
-            "email" => "admin@sekolah.com",
+            "email" => "admin@sekolah.test",
             "password" => Hash::make("password"),
-            "phone" => "081234567890",
-            "address" => "Jl. Admin No. 1",
-            "birth_date" => "1980-01-01",
-            "gender" => "male",
-            "is_active" => true
+            "email_verified_at" => now(),
         ]);
         $admin->assignRole("admin");
 
-        // Create teachers
-        $teachers = [
-            [
-                "name" => "Dr. Ahmad Guru",
-                "email" => "ahmad@sekolah.com",
-                "specialization" => "Matematika",
-                "employee_id" => "GUR001"
-            ],
-            [
-                "name" => "Siti Nurhaliza S.Pd",
-                "email" => "siti@sekolah.com", 
-                "specialization" => "Bahasa Indonesia",
-                "employee_id" => "GUR002"
-            ],
-            [
-                "name" => "John Smith M.Ed",
-                "email" => "john@sekolah.com",
-                "specialization" => "Bahasa Inggris", 
-                "employee_id" => "GUR003"
-            ],
-            [
-                "name" => "Dr. Budi Santoso",
-                "email" => "budi@sekolah.com",
-                "specialization" => "IPA",
-                "employee_id" => "GUR004"
-            ],
-            [
-                "name" => "Rina Susanti S.Sos",
-                "email" => "rina@sekolah.com",
-                "specialization" => "IPS",
-                "employee_id" => "GUR005"
-            ],
-            [
-                "name" => "Drs. Haryanto",
-                "email" => "haryanto@sekolah.com",
-                "specialization" => "Matematika",
-                "employee_id" => "GUR006"
-            ],
-            [
-                "name" => "Dewi Lestari S.Pd",
-                "email" => "dewi@sekolah.com",
-                "specialization" => "Bahasa Indonesia",
-                "employee_id" => "GUR007"
-            ],
-            [
-                "name" => "Michael Johnson",
-                "email" => "michael@sekolah.com",
-                "specialization" => "Bahasa Inggris",
-                "employee_id" => "GUR008"
-            ],
-            [
-                "name" => "Dr. Andi Wijaya",
-                "email" => "andi@sekolah.com",
-                "specialization" => "IPA",
-                "employee_id" => "GUR009"
-            ],
-            [
-                "name" => "Maya Sari S.Sos",
-                "email" => "maya@sekolah.com",
-                "specialization" => "IPS",
-                "employee_id" => "GUR010"
-            ]
-        ];
+        // Create Teacher Users
+        $teacher1 = User::create([
+            "name" => "Budi Santoso",
+            "email" => "budi@sekolah.test",
+            "password" => Hash::make("password"),
+            "phone" => "081234567890",
+            "address" => "Jl. Pendidikan No. 1, Jakarta",
+            "email_verified_at" => now(),
+        ]);
+        $teacher1->assignRole("teacher");
 
-        foreach ($teachers as $index => $teacherData) {
-            $user = User::firstOrCreate([
-                "email" => $teacherData["email"]
-            ], [
-                "name" => $teacherData["name"],
-                "email" => $teacherData["email"],
-                "password" => Hash::make("password"),
-                "phone" => "0812345678" . sprintf("%02d", $index + 1),
-                "address" => "Jl. Guru No. " . ($index + 1),
-                "birth_date" => "198" . ($index % 10) . "-01-01",
-                "gender" => $index % 2 == 0 ? "male" : "female",
-                "is_active" => true
-            ]);
+        Teacher::create([
+            "user_id" => $teacher1->id,
+            "nip" => "198501012010011001",
+            "qualification" => "S1",
+            "max_teaching_hours" => 24,
+            "status" => "active",
+        ]);
 
-            $user->assignRole("teacher");
+        $teacher2 = User::create([
+            "name" => "Siti Rahayu",
+            "email" => "siti@sekolah.test", 
+            "password" => Hash::make("password"),
+            "phone" => "081234567891",
+            "address" => "Jl. Pendidikan No. 2, Jakarta",
+            "email_verified_at" => now(),
+        ]);
+        $teacher2->assignRole("teacher");
 
-            Teacher::firstOrCreate([
-                "user_id" => $user->id
-            ], [
-                "user_id" => $user->id,
-                "employee_id" => $teacherData["employee_id"],
-                "specialization" => $teacherData["specialization"],
-                "max_jam_mengajar" => 24,
-                "hire_date" => "2020-01-01",
-                "salary" => 5000000,
-                "qualifications" => "S1 " . $teacherData["specialization"]
-            ]);
-        }
+        Teacher::create([
+            "user_id" => $teacher2->id,
+            "nip" => "198502022011012002",
+            "qualification" => "S1",
+            "max_teaching_hours" => 24,
+            "status" => "active",
+        ]);
 
-        // Create students
-        $classes = ClassModel::all();
-        $studentCounter = 1;
+        // Create Student Users
+        $student1 = User::create([
+            "name" => "Ahmad Fauzi",
+            "email" => "ahmad@sekolah.test",
+            "password" => Hash::make("password"),
+            "phone" => "081234567892",
+            "address" => "Jl. Siswa No. 1, Jakarta",
+            "email_verified_at" => now(),
+        ]);
+        $student1->assignRole("student");
 
-        foreach ($classes as $class) {
-            for ($i = 1; $i <= 10; $i++) {
-                $user = User::create([
-                    "name" => "Siswa " . $studentCounter,
-                    "email" => "siswa" . $studentCounter . "@sekolah.com",
-                    "password" => Hash::make("password"),
-                    "phone" => "0856789012" . sprintf("%02d", $studentCounter),
-                    "address" => "Jl. Siswa No. " . $studentCounter,
-                    "birth_date" => "200" . ($studentCounter % 9 + 1) . "-01-01",
-                    "gender" => $studentCounter % 2 == 0 ? "male" : "female",
-                    "is_active" => true
-                ]);
+        Student::create([
+            "user_id" => $student1->id,
+            "nis" => "2024001001",
+            "admission_year" => 2024,
+            "status" => "active",
+        ]);
 
-                $user->assignRole("student");
+        $student2 = User::create([
+            "name" => "Dewi Lestari",
+            "email" => "dewi@sekolah.test",
+            "password" => Hash::make("password"),
+            "phone" => "081234567893",
+            "address" => "Jl. Siswa No. 2, Jakarta",
+            "email_verified_at" => now(),
+        ]);
+        $student2->assignRole("student");
 
-                Student::create([
-                    "user_id" => $user->id,
-                    "class_id" => $class->id,
-                    "student_id" => "SIS" . sprintf("%03d", $studentCounter),
-                    "parent_name" => "Orang Tua " . $studentCounter,
-                    "parent_phone" => "0817890123" . sprintf("%02d", $studentCounter),
-                    "parent_address" => "Jl. Orang Tua No. " . $studentCounter,
-                    "enrollment_date" => "2023-07-01",
-                    "status" => "active"
-                ]);
+        Student::create([
+            "user_id" => $student2->id,
+            "nis" => "2024001002",
+            "admission_year" => 2024,
+            "status" => "active",
+        ]);
 
-                $studentCounter++;
-            }
-        }
+        // Create Library Staff
+        $librarian = User::create([
+            "name" => "Pustakawan",
+            "email" => "library@sekolah.test",
+            "password" => Hash::make("password"),
+            "phone" => "081234567894",
+            "address" => "Jl. Perpustakaan No. 1, Jakarta",
+            "email_verified_at" => now(),
+        ]);
+        $librarian->assignRole("library_staff");
     }
 }
