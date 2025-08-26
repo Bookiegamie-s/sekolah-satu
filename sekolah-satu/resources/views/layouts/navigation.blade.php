@@ -84,17 +84,21 @@
                         @endcan
 
                         @can('view_own_grades')
+                        @hasanyrole('student|teacher')
                         <x-nav-link :href="route('grades.my')" :active="request()->routeIs('grades.my')" class="flex items-center">
                             <i class="fas fa-chart-line mr-2"></i>
                             {{ __('Nilai Saya') }}
                         </x-nav-link>
+                        @endhasanyrole
                         @endcan
 
                         @can('view_own_schedule')
+                        @hasanyrole('student|teacher')
                         <x-nav-link :href="route('schedules.my')" :active="request()->routeIs('schedules.my')" class="flex items-center">
                             <i class="fas fa-calendar-alt mr-2"></i>
                             {{ __('Jadwal Saya') }}
                         </x-nav-link>
+                        @endhasanyrole
                         @endcan
 
                         @hasrole('student')
@@ -257,17 +261,21 @@
                 @endcan
 
                 @can('view_own_grades')
+                @hasanyrole('student|teacher')
                 <x-responsive-nav-link :href="route('grades.my')" :active="request()->routeIs('grades.my')" class="flex items-center">
                     <i class="fas fa-chart-line mr-2"></i>
                     {{ __('Nilai Saya') }}
                 </x-responsive-nav-link>
+                @endhasanyrole
                 @endcan
 
                 @can('view_own_schedule')
+                @hasanyrole('student|teacher')
                 <x-responsive-nav-link :href="route('schedules.my')" :active="request()->routeIs('schedules.my')" class="flex items-center">
                     <i class="fas fa-calendar-alt mr-2"></i>
                     {{ __('Jadwal Saya') }}
                 </x-responsive-nav-link>
+                @endhasanyrole
                 @endcan
 
                 @hasrole('student')
