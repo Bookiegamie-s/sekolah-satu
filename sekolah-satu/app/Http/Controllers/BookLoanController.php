@@ -154,4 +154,19 @@ class BookLoanController extends Controller
             "count" => $overdueLoans->count()
         ]);
     }
+
+    /**
+     * Show book loans for authenticated user
+     */
+    public function myBookLoans()
+    {
+        $user = auth()->user();
+        
+        $loans = BookLoan::with(['book'])
+            ->where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        
+        return view('book-loans.my-loans', compact('loans'));
+    }
 }

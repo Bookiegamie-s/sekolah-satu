@@ -57,6 +57,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['role:student'])->group(function () {
         Route::get('my-grades', [GradeController::class, 'myGrades'])->name('grades.my');
         Route::get('my-schedule', [ScheduleController::class, 'mySchedule'])->name('schedules.my');
+        Route::get('my-book-loans', [BookLoanController::class, 'myBookLoans'])->name('book-loans.my');
+        Route::get('books', [BookController::class, 'index'])->name('books.index');
     });
 
     // Teacher self-access routes  

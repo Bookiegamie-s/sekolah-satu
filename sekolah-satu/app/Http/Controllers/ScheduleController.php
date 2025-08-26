@@ -296,4 +296,56 @@ class ScheduleController extends Controller
 
         return $totalHours;
     }
+
+    /**
+     * Show schedule for authenticated user (student or teacher)
+     */
+    public function mySchedule()
+    {
+        $user = auth()->user();
+        
+        if ($user->hasRole('student') && $user->student) {
+            // Student schedule
+            $student = $user->student;
+            
+            if (!$student->class) {
+                return redirect()->route('dashboard')->with('error', 'Anda belum terdaftar di kelas manapun.');
+            }
+            
+            $schedules = Schedule::with(['subject', 'teacher.user'])
+                ->where('class_id', $student->class_id)
+                ->orderBy('day_of_week')
+                ->orderBy('start_time')
+                ->get();
+            
+            $title = 'Jadwal Kelas ' . $student->class->name;
+            
+        } elseif ($user->hasRole('teacher') && $user->teacher) {
+            // Teacher schedule
+            $teacher = $user->teacher;
+            
+            $schedules = Schedule::with(['class', 'subject'])
+                ->where('teacher_id', $teacher->id)
+                ->orderBy('day_of_week')
+                ->orderBy('start_time')
+                ->get();
+            
+            $title = 'Jadwal Mengajar Saya';
+            
+        } else {
+            return redirect()->route('dashboard')->with('error', 'Anda tidak memiliki akses untuk melihat jadwal.');
+        }
+        
+        $days = [
+            1 => "Senin",
+            2 => "Selasa", 
+            3 => "Rabu",
+            4 => "Kamis",
+            5 => "Jumat",
+            6 => "Sabtu",
+            7 => "Minggu"
+        ];
+        
+        return view('schedules.my-schedule', compact('schedules', 'days', 'title'));
+    }
 }

@@ -43,21 +43,24 @@
                         </x-nav-link>
                         @endcan
 
-                        @can('view_students')
-                        @cannot('manage_students')
-                        <x-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')" class="flex items-center">
-                            <i class="fas fa-user-graduate mr-2"></i>
-                            {{ __('Data Siswa') }}
-                        </x-nav-link>
-                        @endcannot
-                        @endcan
-
                         @can('manage_books')
                         <x-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')" class="flex items-center">
                             <i class="fas fa-book mr-2"></i>
                             {{ __('Perpustakaan') }}
                         </x-nav-link>
                         @endcan
+
+                        @hasrole('student')
+                        <x-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')" class="flex items-center">
+                            <i class="fas fa-book mr-2"></i>
+                            {{ __('Katalog Buku') }}
+                        </x-nav-link>
+                        
+                        <x-nav-link :href="route('book-loans.my')" :active="request()->routeIs('book-loans.my')" class="flex items-center">
+                            <i class="fas fa-book-reader mr-2"></i>
+                            {{ __('Peminjaman Saya') }}
+                        </x-nav-link>
+                        @endhasrole
 
                         @can('manage_classes')
                         <x-nav-link :href="route('classes.index')" :active="request()->routeIs('classes.*')" class="flex items-center">
@@ -206,21 +209,24 @@
                 </x-responsive-nav-link>
                 @endcan
 
-                @can('view_students')
-                @cannot('manage_students')
-                <x-responsive-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')" class="flex items-center">
-                    <i class="fas fa-user-graduate mr-2"></i>
-                    {{ __('Data Siswa') }}
-                </x-responsive-nav-link>
-                @endcannot
-                @endcan
-
                 @can('manage_books')
                 <x-responsive-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')" class="flex items-center">
                     <i class="fas fa-book mr-2"></i>
                     {{ __('Perpustakaan') }}
                 </x-responsive-nav-link>
                 @endcan
+
+                @hasrole('student')
+                <x-responsive-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')" class="flex items-center">
+                    <i class="fas fa-book mr-2"></i>
+                    {{ __('Katalog Buku') }}
+                </x-responsive-nav-link>
+                
+                <x-responsive-nav-link :href="route('book-loans.my')" :active="request()->routeIs('book-loans.my')" class="flex items-center">
+                    <i class="fas fa-book-reader mr-2"></i>
+                    {{ __('Peminjaman Saya') }}
+                </x-responsive-nav-link>
+                @endhasrole
 
                 @can('manage_classes')
                 <x-responsive-nav-link :href="route('classes.index')" :active="request()->routeIs('classes.*')" class="flex items-center">
