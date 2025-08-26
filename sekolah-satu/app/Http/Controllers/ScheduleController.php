@@ -51,7 +51,7 @@ class ScheduleController extends Controller
     {
         $classes = ClassModel::orderBy("grade_level")->orderBy("name")->get();
         $subjects = Subject::orderBy("name")->get();
-        $teachers = Teacher::with("user")->where("status", "active")->get();
+        $teachers = Teacher::with("user")->where("is_active", true)->get();
 
         $days = [
             1 => "Senin",

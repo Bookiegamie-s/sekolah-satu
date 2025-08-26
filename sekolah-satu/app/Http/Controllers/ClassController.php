@@ -11,7 +11,7 @@ class ClassController extends Controller
 {
     public function index(Request $request)
     {
-        $query = ClassModel::with(["homeroom_teacher", "students"]);
+        $query = ClassModel::with(["students"]);
 
         if ($request->filled("search")) {
             $query->where("name", "like", "%" . $request->search . "%");
