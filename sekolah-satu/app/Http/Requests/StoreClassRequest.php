@@ -8,7 +8,7 @@ class StoreClassRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()->can("create", \App\Models\SchoolClass::class);
+        return $this->user()->can("create", \App\Models\ClassModel::class);
     }
 
     public function rules(): array

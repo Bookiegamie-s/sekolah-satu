@@ -26,8 +26,11 @@ class TeacherController extends Controller
                        });
 
         $teachers = $query->paginate(10);
+        
+        // Get subjects for filter
+        $subjects = \App\Models\Subject::orderBy('name')->get();
 
-        return view("teachers.index", compact("teachers"));
+        return view("teachers.index", compact("teachers", "subjects"));
     }
 
     public function create()

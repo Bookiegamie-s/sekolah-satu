@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Schedule;
-use App\Models\SchoolClass;
+use App\Models\ClassModel;
 use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
@@ -31,7 +31,7 @@ class ScheduleController extends Controller
                           ->orderBy("start_time")
                           ->paginate(20);
 
-        $classes = SchoolClass::orderBy("grade")->orderBy("name")->get();
+        $classes = ClassModel::orderBy("grade_level")->orderBy("name")->get();
         $teachers = Teacher::with("user")->where("status", "active")->get();
 
         $days = [
@@ -49,7 +49,7 @@ class ScheduleController extends Controller
 
     public function create()
     {
-        $classes = SchoolClass::orderBy("grade")->orderBy("name")->get();
+        $classes = ClassModel::orderBy("grade_level")->orderBy("name")->get();
         $subjects = Subject::orderBy("name")->get();
         $teachers = Teacher::with("user")->where("status", "active")->get();
 
@@ -112,7 +112,7 @@ class ScheduleController extends Controller
 
     public function edit(Schedule $schedule)
     {
-        $classes = SchoolClass::orderBy("grade")->orderBy("name")->get();
+        $classes = ClassModel::orderBy("grade_level")->orderBy("name")->get();
         $subjects = Subject::orderBy("name")->get();
         $teachers = Teacher::with("user")->where("status", "active")->get();
 
@@ -195,7 +195,7 @@ class ScheduleController extends Controller
                           ->get()
                           ->groupBy("day_of_week");
 
-        $classes = SchoolClass::orderBy("grade")->orderBy("name")->get();
+        $classes = ClassModel::orderBy("grade_level")->orderBy("name")->get();
         $teachers = Teacher::with("user")->where("status", "active")->get();
 
         $days = [

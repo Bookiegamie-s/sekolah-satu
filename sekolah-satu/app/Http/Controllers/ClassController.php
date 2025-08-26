@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SchoolClass;
+use App\Models\ClassModel;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -11,14 +11,14 @@ class ClassController extends Controller
 {
     public function index(Request $request)
     {
-        $query = SchoolClass::with(["homeroom_teacher", "students"]);
+        $query = ClassModel::with(["homeroom_teacher", "students"]);
 
         if ($request->filled("search")) {
             $query->where("name", "like", "%" . $request->search . "%");
         }
 
-        if ($request->filled("grade")) {
-            $query->where("grade", $request->grade);
+        if ($request->filled("grade_level")) {
+            $query->where("grade_level", $request->grade_level);
         }
 
         $classes = $query->paginate(20);
@@ -47,14 +47,14 @@ class ClassController extends Controller
             "description" => ["nullable", "string"],
         ]);
 
-        $class = SchoolClass::create($validated);
+        $class = ClassModel::create($validated);
 
         return redirect()
             ->route("classes.index")
             ->with("success", "Kelas berhasil ditambahkan.");
     }
 
-    public function show(SchoolClass $class)
+    public function show(ClassModel $class)
     {
         $class->load([
             "homeroom_teacher.user",
@@ -66,7 +66,7 @@ class ClassController extends Controller
         return view("classes.show", compact("class"));
     }
 
-    public function edit(SchoolClass $class)
+    public function edit(ClassModel $class)
     {
         $teachers = Teacher::with("user")
             ->where(function($query) use ($class) {
@@ -79,7 +79,7 @@ class ClassController extends Controller
         return view("classes.edit", compact("class", "teachers"));
     }
 
-    public function update(Request $request, SchoolClass $class)
+    public function update(Request $request, ClassModel $class)
     {
         $validated = $request->validate([
             "name" => ["required", "string", "max:100", Rule::unique("classes")->ignore($class->id)],
@@ -97,7 +97,7 @@ class ClassController extends Controller
             ->with("success", "Kelas berhasil diperbarui.");
     }
 
-    public function destroy(SchoolClass $class)
+    public function destroy(ClassModel $class)
     {
         if ($class->students()->count() > 0) {
             return redirect()
@@ -112,14 +112,14 @@ class ClassController extends Controller
             ->with("success", "Kelas berhasil dihapus.");
     }
 
-    public function students(SchoolClass $class)
+    public function students(ClassModel $class)
     {
         $class->load(["students.user"]);
         
         return view("classes.students", compact("class"));
     }
 
-    public function schedules(SchoolClass $class)
+    public function schedules(ClassModel $class)
     {
         $schedules = $class->schedules()
             ->with(["subject", "teacher.user"])

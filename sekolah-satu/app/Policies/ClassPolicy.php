@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\SchoolClass;
+use App\Models\ClassModel;
 
 class ClassPolicy
 {
@@ -12,7 +12,7 @@ class ClassPolicy
         return $user->hasAnyRole(["admin", "teacher", "student"]);
     }
 
-    public function view(User $user, SchoolClass $class): bool
+    public function view(User $user, ClassModel $class): bool
     {
         return $user->hasAnyRole(["admin", "teacher", "student"]);
     }
@@ -22,17 +22,17 @@ class ClassPolicy
         return $user->hasRole("admin");
     }
 
-    public function update(User $user, SchoolClass $class): bool
+    public function update(User $user, ClassModel $class): bool
     {
         return $user->hasRole("admin");
     }
 
-    public function delete(User $user, SchoolClass $class): bool
+    public function delete(User $user, ClassModel $class): bool
     {
         return $user->hasRole("admin");
     }
 
-    public function manageStudents(User $user, SchoolClass $class): bool
+    public function manageStudents(User $user, ClassModel $class): bool
     {
         return $user->hasRole("admin") || 
                ($user->hasRole("teacher") && 

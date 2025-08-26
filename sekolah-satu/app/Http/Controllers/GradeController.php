@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Grade;
 use App\Models\Student;
 use App\Models\Subject;
-use App\Models\SchoolClass;
+use App\Models\ClassModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,7 +13,7 @@ class GradeController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Grade::with(["student.user", "subject", "student.schoolClass"]);
+        $query = Grade::with(["student.user", "subject", "student.class"]);
 
         if ($request->filled("class_id")) {
             $query->whereHas("student", function($q) use ($request) {
@@ -43,7 +43,7 @@ class GradeController extends Controller
                        ->orderBy("semester", "desc")
                        ->paginate(20);
 
-        $classes = SchoolClass::orderBy("grade")->orderBy("name")->get();
+        $classes = ClassModel::orderBy("grade_level")->orderBy("name")->get();
         $subjects = Subject::orderBy("name")->get();
 
         return view("grades.index", compact("grades", "classes", "subjects"));
@@ -51,7 +51,7 @@ class GradeController extends Controller
 
     public function create(Request $request)
     {
-        $classes = SchoolClass::orderBy("grade")->orderBy("name")->get();
+        $classes = ClassModel::orderBy("grade_level")->orderBy("name")->get();
         $subjects = Subject::orderBy("name")->get();
         
         $students = collect();
@@ -102,14 +102,14 @@ class GradeController extends Controller
 
     public function show(Grade $grade)
     {
-        $grade->load(["student.user", "student.schoolClass", "subject"]);
+        $grade->load(["student.user", "student.class", "subject"]);
         
         return view("grades.show", compact("grade"));
     }
 
     public function edit(Grade $grade)
     {
-        $grade->load(["student.user", "student.schoolClass", "subject"]);
+        $grade->load(["student.user", "student.class", "subject"]);
         
         return view("grades.edit", compact("grade"));
     }
@@ -142,7 +142,7 @@ class GradeController extends Controller
 
     public function bulk(Request $request)
     {
-        $classes = SchoolClass::orderBy("grade")->orderBy("name")->get();
+        $classes = ClassModel::orderBy("grade_level")->orderBy("name")->get();
         $subjects = Subject::orderBy("name")->get();
         
         $students = collect();
@@ -150,7 +150,7 @@ class GradeController extends Controller
         $selectedSubject = null;
 
         if ($request->filled("class_id") && $request->filled("subject_id")) {
-            $selectedClass = SchoolClass::find($request->class_id);
+            $selectedClass = ClassModel::find($request->class_id);
             $selectedSubject = Subject::find($request->subject_id);
             
             $students = Student::with(["user", "grades" => function($query) use ($request) {
@@ -205,12 +205,12 @@ class GradeController extends Controller
 
     public function report(Request $request)
     {
-        $classes = SchoolClass::orderBy("grade")->orderBy("name")->get();
+        $classes = ClassModel::orderBy("grade_level")->orderBy("name")->get();
         $students = collect();
         $selectedClass = null;
 
         if ($request->filled("class_id")) {
-            $selectedClass = SchoolClass::find($request->class_id);
+            $selectedClass = ClassModel::find($request->class_id);
             
             $students = Student::with([
                 "user",
@@ -233,7 +233,7 @@ class GradeController extends Controller
     {
         $student->load([
             "user",
-            "schoolClass",
+            "class",
             "grades.subject"
         ]);
 
