@@ -76,6 +76,13 @@
                         </x-nav-link>
                         @endcan
 
+                        @can('manage_grades')
+                        <x-nav-link :href="route('grades.index')" :active="request()->routeIs('grades.*')" class="flex items-center">
+                            <i class="fas fa-chart-line mr-2"></i>
+                            {{ __('Nilai Siswa') }}
+                        </x-nav-link>
+                        @endcan
+
                         @can('view_own_grades')
                         <x-nav-link :href="route('grades.my')" :active="request()->routeIs('grades.my')" class="flex items-center">
                             <i class="fas fa-chart-line mr-2"></i>
@@ -239,6 +246,13 @@
                 <x-responsive-nav-link :href="route('schedules.index')" :active="request()->routeIs('schedules.*')" class="flex items-center">
                     <i class="fas fa-calendar mr-2"></i>
                     {{ __('Jadwal') }}
+                </x-responsive-nav-link>
+                @endcan
+
+                @can('manage_grades')
+                <x-responsive-nav-link :href="route('grades.index')" :active="request()->routeIs('grades.*')" class="flex items-center">
+                    <i class="fas fa-chart-line mr-2"></i>
+                    {{ __('Nilai Siswa') }}
                 </x-responsive-nav-link>
                 @endcan
 

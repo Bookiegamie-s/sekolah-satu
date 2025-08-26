@@ -32,7 +32,7 @@ class ScheduleController extends Controller
                           ->paginate(20);
 
         $classes = ClassModel::orderBy("grade_level")->orderBy("name")->get();
-        $teachers = Teacher::with("user")->where("status", "active")->get();
+        $teachers = Teacher::with("user")->where("is_active", true)->get();
 
         $days = [
             1 => "Senin",
