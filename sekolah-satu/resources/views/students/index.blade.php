@@ -1,13 +1,19 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __("Data Siswa") }}
-            </h2>
-            @can("create", App\Models\Student::class)
-                <a href="{{ route("students.create") }}" 
-                   class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Tambah Siswa
+@extends('layouts.app')
+
+@section('content')
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Data Siswa</h1>
+                    <p class="text-gray-600 mt-1">Kelola data siswa sekolah</p>
+                </div>
+                <div class="flex space-x-2">
+                    <a href="{{ route('students.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">
+                        <i class="fas fa-plus mr-2"></i>
+                        Tambah Siswa
                 </a>
             @endcan
         </div>
@@ -192,10 +198,11 @@
                                     Tambah Siswa
                                 </a>
                             </div>
-                        @endcan
+                        @endif
                     </div>
                 @endif
             </div>
         </div>
     </div>
-</x-app-layout>
+</div>
+@endsection

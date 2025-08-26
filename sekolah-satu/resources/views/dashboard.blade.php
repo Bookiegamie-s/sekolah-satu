@@ -1,34 +1,33 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-bold text-2xl text-gray-800 leading-tight">
-                <i class="fas fa-school mr-2 text-blue-600"></i>
-                Dashboard Sekolah
-            </h2>
-            <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
-                @if(auth()->user()->roles->count() > 0)
-                    {{ auth()->user()->getRoleNames()->first() }}
-                @else
-                    Pending Role
-                @endif
-            </span>
-        </div>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Welcome Card -->
-            <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg shadow-lg mb-8 text-white">
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2">Selamat Datang, {{ auth()->user()->name }}!</h3>
-                    <p class="opacity-90">Sistem Manajemen Sekolah Digital</p>
-                    @if(auth()->user()->roles->count() == 0)
-                        <div class="mt-4 bg-yellow-500/20 border border-yellow-300 rounded-lg p-3">
-                            <p class="text-sm">⚠️ Role Anda belum ditetapkan. Silakan hubungi administrator.</p>
-                        </div>
-                    @endif
+@section('content')
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Welcome Card -->
+        <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg shadow-lg mb-8 text-white">
+            <div class="p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">Selamat Datang, {{ auth()->user()->name }}!</h3>
+                        <p class="opacity-90">Sistem Manajemen Sekolah Digital</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="bg-white/20 text-white text-sm font-medium px-3 py-1 rounded-full">
+                            @if(auth()->user()->roles->count() > 0)
+                                {{ ucfirst(auth()->user()->getRoleNames()->first()) }}
+                            @else
+                                Pending Role
+                            @endif
+                        </span>
+                    </div>
                 </div>
+                @if(auth()->user()->roles->count() == 0)
+                    <div class="mt-4 bg-yellow-500/20 border border-yellow-300 rounded-lg p-3">
+                        <p class="text-sm">⚠️ Role Anda belum ditetapkan. Silakan hubungi administrator.</p>
+                    </div>
+                @endif
             </div>
+        </div>
 
             @if(auth()->user()->roles->count() > 0)
             <!-- Stats Cards -->
@@ -276,4 +275,5 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</div>
+@endsection

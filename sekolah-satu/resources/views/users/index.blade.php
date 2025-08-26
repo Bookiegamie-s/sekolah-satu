@@ -1,23 +1,28 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h2 class="font-bold text-2xl text-gray-800 leading-tight">
-                <i class="fas fa-users mr-2 text-blue-600"></i>
-                Manajemen Users
-            </h2>
-            <a href="{{ route('users.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg flex items-center transition duration-200">
-                <i class="fas fa-plus mr-2"></i>
-                Tambah User
-            </a>
-        </div>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if (session('success'))
-                <div class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg relative" role="alert">
-                    <span class="block sm:inline">{{ session('success') }}</span>
+@section('content')
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Manajemen Users</h1>
+                    <p class="text-gray-600 mt-1">Kelola semua pengguna sistem</p>
                 </div>
+                <div class="flex space-x-2">
+                    <a href="{{ route('users.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center">
+                        <i class="fas fa-plus mr-2"></i>
+                        Tambah User
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        @if (session('success'))
+            <div class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg relative" role="alert">
+                <span class="block sm:inline">{{ session('success') }}</span>
+            </div>
             @endif
 
             @if (session('error'))
@@ -158,4 +163,5 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</div>
+@endsection
